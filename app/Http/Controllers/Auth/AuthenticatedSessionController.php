@@ -23,22 +23,9 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        // $request->authenticate();
-
-        // $request->session()->regenerate();
-        
-        // $user = $request->user();
-        
-        // if ($user->isUserType('instructor')) {
-        //     return redirect()->route('faculty.dashboard');
-        // }
-        
-        // return redirect()->route('admin.dashboard');
-
-
-         $credentials = $request->validate([
+public function store(LoginRequest $request): RedirectResponse
+{
+    $credentials = $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required'],
     ]);
@@ -48,19 +35,22 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
 
-        if ($user->isUserType('instructor')) { // Ensure this condition matches your user type logic
-            return redirect()->route('instructor.dashboard');
+        if ($user->isUserType('teacher')) {
+            // Flash success message for teacher
+            $request->session()->flash('login_success', true);
+            return redirect()->route('teacher.dashboard');
         }
 
+        // Flash success message for admin
+        $request->session()->flash('login_success', true);
         return redirect()->route('admin.dashboard');
     }
 
     return back()->withErrors([
         'email' => 'The provided credentials do not match our records.',
     ]);
+}
 
-
-    }
 
     /**
      * Destroy an authenticated session.

@@ -16,7 +16,7 @@ class UserTypeDropdown extends Component
         $this->selected = $selected;
         $this->options = [
             'admin' => 'Admin',
-            'instructor' => 'Instructor',
+            'teacher' => 'Teacher',
             'student' => 'Student',
         ];
     }

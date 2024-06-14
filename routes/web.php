@@ -10,11 +10,22 @@ use App\Http\Middleware\checkUserType;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('student.dashboard');
+    return view('auth.login');
 });
 
-// admin routes
-Route::middleware(['auth', 'checkUserType:admin'])->group(function () {
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::middleware(['checkUserType:teacher'])->group(function () {
+
+        Route::get('teacher/dashboard', function () {
+            return view('teacher.dashboard'); 
+        })->name('teacher.dashboard');
+
+    });
+
+
+
     Route::get('admin/dashboard', function () {  return view('admin.dashboard'); })->name('admin.dashboard');
     Route::get('admin/profile', [ProfileController::class, 'edit'])->name('admin_profile.edit');
     Route::patch('admin/profile', [ProfileController::class, 'update'])->name('admin_profile.update');
@@ -80,12 +91,6 @@ Route::middleware(['auth', 'checkUserType:admin'])->group(function () {
 
 });
 
-//instructor routes
-Route::middleware(['auth', 'checkUserType:teacher'])->group(function () {
-    Route::get('teacher/dashboard', function () {  return view('teacher.dashboard'); })->name('teacher.dashboard');
-    Route::get('instructor/profile', [ProfileController::class, 'edit'])->name('instructor_profile.edit');
-    Route::patch('instructor/profile', [ProfileController::class, 'update'])->name('instructor_profile.update');
-    Route::delete('instructor/profile', [ProfileController::class, 'destroy'])->name('instructor_profile.destroy');
-});
+
 
 require __DIR__.'/auth.php';

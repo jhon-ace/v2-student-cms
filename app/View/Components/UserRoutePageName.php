@@ -54,8 +54,8 @@ class UserRoutePageName extends Component
                 'faculty.edit' => __('Edit Faculty'),
 
             ],
-            'faculty' => [
-                'faculty.dashboard' => __('Faculty Dashboard'),
+            'teacher' => [
+                'teacher.dashboard' => __('Teacher Dashboard'),
                 //
             ],
             'student' => [
